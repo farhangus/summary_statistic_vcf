@@ -20,9 +20,8 @@ do
 hp=$(awk '{print $1}'<<<"$line")
 chr=$(awk '{print $2}'<<<"$line")
 position=$(awk '{print $3}'<<<"$line")
-result=($(/hgsc_software/bcftools/bcftools-1.15.1/bin/bcftools view --no-header --regions chr22 Clair_hifi_results/phased_merge_output.vcf.gz --regions chr1 --include " PS = $position" | awk 'NR==1 {print $2}; END{print $2}' | xargs))
+result=($(/hgsc_software/bcftools/bcftools-1.15.1/bin/bcftools view --no-header --regions $chromosome Clair_hifi_results/phased_merge_output.vcf.gz --regions $chromosome --include " PS = $position" | awk 'NR==1 {print $2}; END{print $2}' | xargs))
 length=$((result[1]-result[0]))
-
 printf '%-17s%-14s%-12s%s\n' $hp $chr $position $length >>"$tmp_chr"
 done<"$output_path/$chromosome.txt"
 mv $tmp_chr "$output_path/$chromosome.txt"
